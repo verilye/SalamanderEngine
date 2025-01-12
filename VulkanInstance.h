@@ -55,20 +55,18 @@ public:
   
     void initVulkan();
     void initWindow();
-
+    static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
     //Platform agnostic window creation
     void createSurface();
     // Use validation layer for support for necessary queues and functionalities on the physical device
     bool checkValidationLayerSupport();
     // Create a main Vulkan instance using physical devices to create a logical device and then using the logical device
     void createInstance();
-    
     //////
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
     bool isDeviceSuitable(VkPhysicalDevice device);
     void pickPhysicalDevice();
     void createLogicalDevice();
-
     //////
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
@@ -76,10 +74,8 @@ public:
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
     //////
-
     void createSwapChain();
     void createImageViews();
-
 
     /// Graphics Pipeline - readFile is a helper to load SPIRV data into engine
     void createGraphicsPipeline();
@@ -87,8 +83,6 @@ public:
     VkShaderModule createShaderModule(const std::vector<char>& code);
 
     void createRenderPass();
-
-
     // Destroy all the initialised devices and structs created
     void cleanup();
 
@@ -96,6 +90,13 @@ public:
     // VARIABLES ///////////////////////////////////
     const uint32_t WIDTH = 800;
     const uint32_t HEIGHT = 600;
+
+    const int MAX_FRAMES_IN_FLIGHT = 2;
+
+    /// THIS variable could be weird, check back on it
+    uint32_t currentFrame = 0;
+    bool framebufferResized = false;
+
 
     VkInstance instance;
     // The main game window
@@ -121,22 +122,28 @@ public:
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
     VkPipeline graphicsPipeline;
-
+    
     std::vector<VkFramebuffer> swapChainFramebuffers;
     void createFramebuffers();
 
     VkCommandPool commandPool;
     void createCommandPool();
 
-    VkCommandBuffer commandBuffer;
-    void createCommandBuffer();
+    std::vector<VkCommandBuffer> commandBuffers;
+    void createCommandBuffers();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+
+    std::vector<VkSemaphore> imageAvailableSemaphores;
+    std::vector<VkSemaphore> renderFinishedSemaphores;
+    std::vector<VkFence> inFlightFences;
+
+    void createSyncObjects();
 
     void drawFrame();
 
-    VkSemaphore imageAvailableSemaphore;
-    VkSemaphore renderFinishedSemaphore;
-    VkFence inFlightFence;
-    void createSyncObjects();
+
+    void recreateSwapChain();
+    void cleanupSwapChain();
+
 };
 

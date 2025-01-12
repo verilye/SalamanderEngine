@@ -4,6 +4,18 @@
 // in a class
 VulkanInstance vulkanInstance;
 
+
+
+
+// TODO - seperate Vulkan functionality out into different files
+// one for main application
+// device management
+// swapchain management
+// command buffers
+// shaders and pipelines
+// synchronisation
+// utilities
+
 void mainLoop() {
 
     while (!glfwWindowShouldClose(vulkanInstance.window)) {
@@ -19,7 +31,6 @@ int main() {
     // Initialise Systems
     vulkanInstance.initWindow();
     vulkanInstance.initVulkan();
-    vulkanInstance.createInstance();
     
     mainLoop();
 

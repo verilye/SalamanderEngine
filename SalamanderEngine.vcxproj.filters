@@ -29,6 +29,9 @@
     <ClInclude Include="VulkanInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VulkanVertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.vert">
